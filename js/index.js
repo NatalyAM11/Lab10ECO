@@ -34,12 +34,12 @@ registrar= ()=> {
     let nombreC= nombre.value;
     fi=idR;
     
-    yaEsta(fi);
-
     objetoCandidato={
         ID:idR,
         Nombre:nombreC,
     }
+
+    yaEsta();
 
     database.ref('candidatos/'+objetoCandidato.ID).set(objetoCandidato);
     console.log(objetoCandidato);
@@ -141,12 +141,16 @@ contadorVotes=(arrayCandi,arrayVotos)=>{
     
 }
 
-yaEsta=(valor)=>{
-    listCandidatos.forEach(candidatoo=>{
-        if(valor==candidatoo.ID){
+
+//intento para que no deje registrar un candidato que ya esta registrado antes
+yaEsta=()=>{
+    listCandidatos.forEach(candidato=>{
+        if(fi==candidato.key){
             console.log("El candidato con el ID que acaba de ingresar ya esta registrado");
         }
-    }); 
+    });
+    
+    return;
 }
 
 
