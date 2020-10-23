@@ -1,0 +1,36 @@
+
+body{
+padding: 5%;
+}
+
+
+#registro{
+display: flex;
+flex-direction: column;
+width: 700px;
+margin: 0 auto;
+justify-content: center;
+align-items: center;
+text-align: center;
+background-color: rgb(234, 238, 234);
+border-radius: 10px;
+}
+
+#registro *{
+width: 40%;
+/*margin: 5px 20px 5px 16px;*/
+margin:5px;
+padding: 10px;
+}
+
+.botones{
+    background-color: darkcyan;
+    color: white;
+    border-radius: 8px;
+}
+
+.otrosBotones{
+    background-color: rgb(176, 41, 230);
+    color: white;
+    border-radius: 8px;
+}
