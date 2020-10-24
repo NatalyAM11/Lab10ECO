@@ -24,24 +24,47 @@ let objetoCandidato
 let listCandidatos=[];
 let listVotos= [];
 
-let fi;
-
 
 registrar= ()=> {
 
     //inputs
     let idR=idRegistro.value;
     let nombreC= nombre.value;
-    fi=idR;
+    
+    let yaEsta=false;
     
     objetoCandidato={
         ID:idR,
         Nombre:nombreC,
     }
 
-    yaEsta();
+    database.ref('candidatos').on('value',
+    function(data){
 
-    database.ref('candidatos/'+objetoCandidato.ID).set(objetoCandidato);
+        data.forEach(
+        candidato =>{ 
+        let valor=candidato.val();
+        let id=valor.ID;
+
+        if(id===idR){
+            yaEsta=true;
+        }
+    });
+
+    if(yaEsta===false){
+        database.ref('candidatos/'+objetoCandidato.ID).set(objetoCandidato);
+    }
+    });
+
+    //Aca ocurre un pequeño error, porque si es un candidato que no esta registrado
+    //deja registrarlo normal  y aparece en firebase, pero el alert dice que no pudo registrarlo
+
+    if(yaEsta=false){
+    alert("Candidato registrado");
+    }else{
+        alert("El candidato con el ID que acaba de ingresar ya esta registrado");
+    }
+
     console.log(objetoCandidato);
 
 }
@@ -60,7 +83,7 @@ votar= ()=>{
 
 
 
-
+//Funcion para ver los candidatos
 verCandi=()=>{
     database.ref('candidatos').on('value',
     function(data){
@@ -76,13 +99,13 @@ verCandi=()=>{
 }
 
 
-
+//funcion para ver los votos
 verVotes=()=>{
 
 let listCandidatos=[];
 let listVotos= [];
 
-//Obtengo el candidato de firebase
+//Obtengo los candidatos y votos del firebase y los metemos al arraylist
 database.ref('candidatos').on('value',
 function(data){
 
@@ -116,6 +139,9 @@ function(data){
 
 contadorVotes=(arrayCandi,arrayVotos)=>{
 
+    //Traigo los arraylist con la info del firebase y comparo los datos para
+    //el contador de votos
+
     let listVotosFinal= [];
     let totalVotos=arrayVotos.length;
     
@@ -128,6 +154,7 @@ contadorVotes=(arrayCandi,arrayVotos)=>{
             }
         }); 
 
+        //Hago el calculo para el porcentaje
         if(votosC!==0){
           porcentaje= (votosC/totalVotos)*100;
         }
@@ -142,16 +169,6 @@ contadorVotes=(arrayCandi,arrayVotos)=>{
 }
 
 
-//intento para que no deje registrar un candidato que ya esta registrado antes
-yaEsta=()=>{
-    listCandidatos.forEach(candidato=>{
-        if(fi==candidato.key){
-            console.log("El candidato con el ID que acaba de ingresar ya esta registrado");
-        }
-    });
-    
-    return;
-}
 
 
 bRegistro.addEventListener('click',registrar);
