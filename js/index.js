@@ -76,7 +76,7 @@ votar= ()=>{
     objetoVoto={
         IDV: idV,
     }
-
+    
     //enviamos el voto
     database.ref('votos/').push().set(objetoVoto);
 }
